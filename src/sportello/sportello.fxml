@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane style="-fx-background-color: #777;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sportello.sportelloController">
+   <top>
+      <Label text="Banca SoldiBelli" textFill="#f6ff00" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="Consolas" size="20.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets bottom="20.0" />
+         </BorderPane.margin>
+      </Label>
+   </top>
+   <left>
+      <VBox spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="B1" mnemonicParsing="false" onAction="#pressB1" prefHeight="25.0" prefWidth="30.0" />
+            <Button fx:id="B2" layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#pressB2" prefHeight="25.0" prefWidth="30.0" />
+            <Button fx:id="B3" layoutX="10.0" layoutY="70.0" mnemonicParsing="false" onAction="#pressB3" prefHeight="25.0" prefWidth="30.0" />
+            <Button fx:id="B4" layoutX="10.0" layoutY="105.0" mnemonicParsing="false" onAction="#pressB4" prefHeight="25.0" prefWidth="30.0" />
+         </children>
+         <padding>
+            <Insets right="10.0" top="15.0" />
+         </padding>
+      </VBox>
+   </left>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+   <center>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <HBox>
+               <children>
+                  <TextArea fx:id="menu" editable="false" prefWidth="100.0" />
+                  <TextArea fx:id="screen" accessibleRole="TEXT" editable="false" text="Benvenuto allo sportello automatico di&#10;&#10;BANCA SOLDIBELLI&#10;&#10;inserisci la carta e digita il PIN">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </TextArea>
+               </children>
+            </HBox>
+            <HBox style="-fx-background-color: #fff;">
+               <children>
+                  <Label fx:id="labelpin" alignment="TOP_LEFT" prefWidth="90.0" style="-fx-background-color: #fff;" text="Inserisci PIN" visible="false">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <PasswordField fx:id="pinfield" alignment="TOP_LEFT" promptText="PIN" visible="false">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </PasswordField>
+                  <Button fx:id="btok" mnemonicParsing="false" onAction="#dook" text="OK" visible="false" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+   <bottom>
+      <HBox spacing="100.0">
+         <padding>
+            <Insets left="40.0" top="10.0" />
+         </padding>
+         <children>
+            <Button fx:id="cartaButton" minWidth="100.0" mnemonicParsing="false" onAction="#doCarta" text="Inserisci Carta" />
+            <Button fx:id="soldi" layoutX="50.0" layoutY="20.0" minWidth="250.0" mnemonicParsing="false" onAction="#ritiraSoldi" text="Soldi" visible="false" />
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>
