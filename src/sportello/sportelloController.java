@@ -14,6 +14,7 @@ public class sportelloController {
 	Model model;
 	boolean cartaInserita = false;
 	boolean accessoEffettuato = false;
+	boolean indietro = false;
 
     @FXML
     private ResourceBundle resources;
@@ -73,10 +74,16 @@ public class sportelloController {
         	pinfield.setVisible(false);
         	btok.setVisible(false);
         	cartaButton.setText("Inserisci Carta");
+        	menu.clear();
+        	model.Exit();
+        	
+        	//reset variabili
         	if (accessoEffettuato) {
         		accessoEffettuato = false;
         	}
-        	menu.clear();
+        	if (indietro) {
+        		indietro = false;
+        	}
         	
         	//visualizzazione screen
         	screen.setText("Benvenuto allo sportello automatico di\n\nBANCA SOLDIBELLI\n\ninserisci la carta e digita il PIN");
@@ -116,12 +123,18 @@ public class sportelloController {
 
     @FXML
     void pressB1(ActionEvent event) {
-    	
+    	if (accessoEffettuato && !indietro) {
+    		indietro = true;
+    		
+    		//view
+    		menu.setText("\n\n\n\n\n\n\nIndietro");
+    		screen.setText("Saldo disponibile: " + model.getSaldo());
+    	}
     }
 
     @FXML
     void pressB2(ActionEvent event) {
-
+    	
     }
 
     @FXML
@@ -131,7 +144,13 @@ public class sportelloController {
 
     @FXML
     void pressB4(ActionEvent event) {
-
+    	if (indietro) {
+    		indietro = false;
+    		
+    		//view
+    		screen.setText("Benvenuto " + model.getIntestatario());
+			menu.setText("\nSALDO\n\nPRELIEVO\n\nVERSAMENTO");
+    	}
     }
 
     @FXML

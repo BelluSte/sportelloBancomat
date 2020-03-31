@@ -86,4 +86,15 @@ public class Model {
 		return intest;
 	}
 	
+	/**
+	 * Mostra il saldo
+	 * @return saldo
+	 */
+	public double getSaldo() {
+		return cc.get(iCC).getSaldo();
+	}
+	
+	public void Exit() {
+		iCC = -1;
+	}
 }
