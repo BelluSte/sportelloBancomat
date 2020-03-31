@@ -12,7 +12,8 @@ import javafx.scene.control.TextArea;
 public class sportelloController {
 	
 	Model model;
-	public boolean cartaInserita = false;
+	boolean cartaInserita = false;
+	boolean accessoEffettuato = false;
 
     @FXML
     private ResourceBundle resources;
@@ -72,6 +73,10 @@ public class sportelloController {
         	pinfield.setVisible(false);
         	btok.setVisible(false);
         	cartaButton.setText("Inserisci Carta");
+        	if (accessoEffettuato) {
+        		accessoEffettuato = false;
+        	}
+        	menu.clear();
         	
         	//visualizzazione screen
         	screen.setText("Benvenuto allo sportello automatico di\n\nBANCA SOLDIBELLI\n\ninserisci la carta e digita il PIN");
@@ -84,7 +89,13 @@ public class sportelloController {
     		if (model.controlloPin(pinfield.getText())) {
     			if (model.getConto(pinfield.getText())) {
     				//conto trovato
+    				accessoEffettuato = true;
+    				pinfield.clear();
+    				pinfield.setVisible(false);
+    				labelpin.setVisible(false);
+    				btok.setVisible(false);
     				screen.setText("Benvenuto " + model.getIntestatario());
+    				menu.setText("\nSALDO\n\nPRELIEVO\n\nVERSAMENTO");
     			} else {
     				//conto non trovato
     				screen.setText("Nessun contocorrente trovato");
@@ -105,7 +116,7 @@ public class sportelloController {
 
     @FXML
     void pressB1(ActionEvent event) {
-
+    	
     }
 
     @FXML
