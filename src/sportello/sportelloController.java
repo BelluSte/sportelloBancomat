@@ -8,14 +8,22 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 public class sportelloController {
 	
 	Model model;
-	boolean cartaInserita = false;
-	boolean accessoEffettuato = false;
-	boolean indietro = false;
-
+	int fase = 0;
+	/*
+	 * fase 0 - carta non inserita
+	 * fase 1 - carta inserita, richiesta pin
+	 * fase 2 - accesso effettuato
+	 * fase 3 - operazione salso
+	 * fase 4 - operazione prelievo
+	 * fase 5 - operazione versamento
+	 */
+	double importo;
+	
     @FXML
     private ResourceBundle resources;
 
@@ -45,10 +53,13 @@ public class sportelloController {
 
     @FXML
     private PasswordField pinfield;
+    
+    @FXML
+    private TextField impfield;
 
     @FXML
     private Button btok;
-
+    
     @FXML
     private Button cartaButton;
 
@@ -57,33 +68,28 @@ public class sportelloController {
 
     @FXML
     void doCarta(ActionEvent event) {
-    	if (!cartaInserita) {
+    	if (fase == 0) {
     		//simula inserimento carta bancomat
     		labelpin.setVisible(true);
         	pinfield.setVisible(true);
+        	if (!pinfield.getText().equals("Inserisci PIN")) {
+        		pinfield.setText("Inserisci PIN");
+        	}
         	btok.setVisible(true);
         	cartaButton.setText("Rimuovi Carta");
-        	cartaInserita = true;
+        	fase = 1;
         	
         	//visualizzazione screen
         	screen.setText("Inserisci il PIN\n\n\t |  |\n\t |  |\n\tV V");
-    	} else if (cartaInserita) {
+    	} else if (fase != 0) {
     		//simula rimozione carta bancomat
-    		cartaInserita = false;
+    		fase = 0;
     		labelpin.setVisible(false);
         	pinfield.setVisible(false);
         	btok.setVisible(false);
         	cartaButton.setText("Inserisci Carta");
         	menu.clear();
         	model.Exit();
-        	
-        	//reset variabili
-        	if (accessoEffettuato) {
-        		accessoEffettuato = false;
-        	}
-        	if (indietro) {
-        		indietro = false;
-        	}
         	
         	//visualizzazione screen
         	screen.setText("Benvenuto allo sportello automatico di\n\nBANCA SOLDIBELLI\n\ninserisci la carta e digita il PIN");
@@ -92,39 +98,70 @@ public class sportelloController {
 
     @FXML
     void dook(ActionEvent event) {
-    	if (pinfield.getLength()==4) {
-    		if (model.controlloPin(pinfield.getText())) {
-    			if (model.getConto(pinfield.getText())) {
-    				//conto trovato
-    				accessoEffettuato = true;
-    				pinfield.clear();
-    				pinfield.setVisible(false);
-    				labelpin.setVisible(false);
-    				btok.setVisible(false);
-    				screen.setText("Benvenuto " + model.getIntestatario());
-    				menu.setText("\nSALDO\n\nPRELIEVO\n\nVERSAMENTO");
-    			} else {
-    				//conto non trovato
-    				screen.setText("Nessun contocorrente trovato");
-    	    		pinfield.clear();
-    			}
-    		} else {
-    			//pin formalmente errato
-    			screen.setText("PIN Errato\n\nInserire il PIN corretto di 4 numeri");
-        		pinfield.clear();
-    		}
+    	
+    	if (fase == 1) {
     		
-    	} else {
-    		//pin formalmente errato
-    		screen.setText("PIN Errato\n\nInserire il PIN corretto di 4 numeri");
-    		pinfield.clear();
+    		//pin
+    		if (pinfield.getLength()==4) {
+        		if (model.controlloPin(pinfield.getText())) {
+        			if (model.getConto(pinfield.getText())) {
+        				//conto trovato
+        				fase = 2;
+        				pinfield.clear();
+        				pinfield.setVisible(false);
+        				labelpin.setVisible(false);
+        				btok.setVisible(false);
+        				screen.setText("Benvenuto " + model.getIntestatario());
+        				menu.setText("\nSALDO\n\nPRELIEVO\n\nVERSAMENTO");
+        			} else {
+        				//conto non trovato
+        				screen.setText("Nessun contocorrente trovato");
+        	    		pinfield.clear();
+        			}
+        		} else {
+        			//pin formalmente errato
+        			screen.setText("PIN Errato\n\nInserire il PIN corretto di 4 numeri");
+            		pinfield.clear();
+        		}
+        		
+        	} else {
+        		//pin formalmente errato
+        		screen.setText("PIN Errato\n\nInserire il PIN corretto di 4 numeri");
+        		pinfield.clear();
+        	}
     	}
+    	
+    	//Prelievo
+    	else if (fase == 4) {
+    			
+    			
+    	}	   		
+    	
+    	//Versamento
+    	else if (fase == 5) {
+
+        	try {
+       			importo = Double.parseDouble(impfield.getText());
+       			//versamento + verifica
+       			if (model.Versamento(importo)) {
+       				screen.setText("Operazione avvenuta con successo");
+       				impfield.clear();
+       				impfield.setVisible(false);
+       				btok.setVisible(false);
+       				labelpin.setVisible(false);
+       			}
+       		} catch(NumberFormatException exp) {
+       			screen.setText("Errore. Inserisci un importo corretto");
+       			impfield.clear();
+       		}		
+        	}
     }
 
+        
     @FXML
     void pressB1(ActionEvent event) {
-    	if (accessoEffettuato && !indietro) {
-    		indietro = true;
+    	if (fase == 2) {
+    		fase = 3;
     		
     		//view
     		menu.setText("\n\n\n\n\n\n\nIndietro");
@@ -134,18 +171,31 @@ public class sportelloController {
 
     @FXML
     void pressB2(ActionEvent event) {
+    	//prelievo
     	
     }
 
     @FXML
     void pressB3(ActionEvent event) {
-
+    	//versamento
+    	if (fase == 2) {
+    		fase = 5;
+    		
+    		//view
+    		menu.setText("\n\n\n\n\n\n\nIndietro");
+    		screen.setText("Inserisci l'importo che desideri versare\n\n\t |  |\n\t |  |\n\tV V");
+    		labelpin.setVisible(true);
+    		labelpin.setText("Versa");
+    		impfield.setVisible(true);
+    		btok.setVisible(true);
+    	}
     }
 
     @FXML
     void pressB4(ActionEvent event) {
-    	if (indietro) {
-    		indietro = false;
+    	// indietro
+    	if (fase == 3 || fase == 4 || fase == 5) {
+    		fase = 2;
     		
     		//view
     		screen.setText("Benvenuto " + model.getIntestatario());
@@ -168,6 +218,7 @@ public class sportelloController {
         assert screen != null : "fx:id=\"screen\" was not injected: check your FXML file 'sportello.fxml'.";
         assert labelpin != null : "fx:id=\"labelpin\" was not injected: check your FXML file 'sportello.fxml'.";
         assert pinfield != null : "fx:id=\"pinfield\" was not injected: check your FXML file 'sportello.fxml'.";
+        assert impfield != null : "fx:id=\"impfield\" was not injected: check your FXML file 'sportello.fxml'.";
         assert btok != null : "fx:id=\"btok\" was not injected: check your FXML file 'sportello.fxml'.";
         assert cartaButton != null : "fx:id=\"cartaButton\" was not injected: check your FXML file 'sportello.fxml'.";
         assert soldi != null : "fx:id=\"soldi\" was not injected: check your FXML file 'sportello.fxml'.";

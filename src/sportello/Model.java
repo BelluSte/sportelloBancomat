@@ -20,34 +20,42 @@ public class Model {
 		cc.add(cc3);
 	}
 	
+	
+	public void Exit() {
+		iCC = -1;
+	}
+	
+	
 	/**
 	 * Trova l'index del contocorrente abbinato al pin e lo salva in una variabile
 	 * @param p PIN
 	 */
 	public boolean getConto(String p) {
-		boolean trovato = false;
 		for (Utenti u : cc) {
 			if (p.equals(u.getPin())) {
 				iCC = cc.indexOf(u);
-				trovato = true;
+				ccTrovato = true;
 				break;
 			}
 		}
-		return trovato;
+		return ccTrovato;
 	}
 	
+	
 	/**
-	 * aggiunge al saldo il valore del versamento
+	 * aggiunge al saldo il valore del versamento e retun true
 	 * @param vers double
 	 */
-	public void Versamento(double vers) {
+	public boolean Versamento(double vers) {
 		if (ccTrovato) {
 			double operazione = cc.get(iCC).getSaldo() + vers;
 			cc.get(iCC).setSaldo(operazione);
+			return true;
 		} else {
-			return;
+			return false;
 		}
 	}
+	
 	
 	/**
 	 * preleva il valore desiderato se disponile e lo sottrae dal saldo
@@ -61,13 +69,17 @@ public class Model {
 				double operazione = cc.get(iCC).getSaldo() - prel;
 				cc.get(iCC).setSaldo(operazione);
 				success = true;
-			} else {
-				
 			}
 		}
 		return success;
 	}
 	
+	
+	/**
+	 * Pin deve contenere solo numeri
+	 * @param pw il pin da controllare
+	 * @return
+	 */
 	public boolean controlloPin(String pw) {
 		boolean correct = true;
 		char[] pwa = pw.toCharArray();
@@ -79,12 +91,18 @@ public class Model {
 		return correct;
 	}
 	
+	
+	/**
+	 * cognome e nome in una sola string
+	 * @return
+	 */
 	public String getIntestatario() {
 		String intestC = cc.get(iCC).getCognome();
 		String intestN = cc.get(iCC).getNome();
 		String intest = intestC + " " + intestN;
 		return intest;
 	}
+	
 	
 	/**
 	 * Mostra il saldo
@@ -94,7 +112,4 @@ public class Model {
 		return cc.get(iCC).getSaldo();
 	}
 	
-	public void Exit() {
-		iCC = -1;
-	}
 }

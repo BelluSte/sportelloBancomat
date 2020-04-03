@@ -5,8 +5,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -22,7 +24,7 @@
       </Label>
    </top>
    <left>
-      <VBox spacing="10.0" BorderPane.alignment="CENTER">
+      <VBox spacing="8.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="B1" mnemonicParsing="false" onAction="#pressB1" prefHeight="25.0" prefWidth="30.0" />
             <Button fx:id="B2" layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#pressB2" prefHeight="25.0" prefWidth="30.0" />
@@ -55,7 +57,7 @@
             </HBox>
             <HBox style="-fx-background-color: #fff;">
                <children>
-                  <Label fx:id="labelpin" alignment="TOP_LEFT" prefWidth="90.0" style="-fx-background-color: #fff;" text="Inserisci PIN" visible="false">
+                  <Label fx:id="labelpin" alignment="TOP_LEFT" prefWidth="90.0" style="-fx-background-color: #fff;" text="Inserisci PIN" textAlignment="CENTER" visible="false">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -63,11 +65,12 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Label>
-                  <PasswordField fx:id="pinfield" alignment="TOP_LEFT" promptText="PIN" visible="false">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </PasswordField>
+                  <StackPane>
+                     <children>
+                        <PasswordField fx:id="pinfield" alignment="TOP_LEFT" promptText="PIN" visible="false" />
+                        <TextField fx:id="impfield" promptText="Importo" visible="false" />
+                     </children>
+                  </StackPane>
                   <Button fx:id="btok" mnemonicParsing="false" onAction="#dook" text="OK" visible="false" />
                </children>
             </HBox>
