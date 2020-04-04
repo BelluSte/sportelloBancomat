@@ -72,8 +72,8 @@ public class sportelloController {
     		//simula inserimento carta bancomat
     		labelpin.setVisible(true);
         	pinfield.setVisible(true);
-        	if (!pinfield.getText().equals("Inserisci PIN")) {
-        		pinfield.setText("Inserisci PIN");
+        	if (!labelpin.getText().equals("Inserisci PIN")) {
+        		labelpin.setText("Inserisci PIN");
         	}
         	btok.setVisible(true);
         	cartaButton.setText("Rimuovi Carta");
@@ -134,7 +134,26 @@ public class sportelloController {
     	//Prelievo
     	else if (fase == 4) {
     			
-    			
+    		try {
+       			importo = Double.parseDouble(impfield.getText());
+       			
+       			if (model.Prelievo(importo)) {
+       				soldi.setVisible(true);
+       				impfield.clear();
+       				impfield.setVisible(false);
+       				btok.setVisible(false);
+       				labelpin.setVisible(false);
+       				screen.setText("Prelevare il contante");
+       				menu.setText("");
+       				fase = -1;
+       			} else {
+       				screen.setText("Credito insufficente");
+       				impfield.clear();
+       			}
+       		} catch(NumberFormatException exp) {
+       			screen.setText("Errore. Inserisci un importo corretto");
+       			impfield.clear();
+       		}
     	}	   		
     	
     	//Versamento
@@ -172,7 +191,17 @@ public class sportelloController {
     @FXML
     void pressB2(ActionEvent event) {
     	//prelievo
-    	
+    	if (fase == 2) {
+    		fase = 4;
+    		
+    		//view
+    		menu.setText("\n\n\n\n\n\n\nIndietro");
+    		screen.setText("Inserisci l'importo che desideri prelevare\n\n\t |  |\n\t |  |\n\tV V");
+    		labelpin.setVisible(true);
+    		labelpin.setText("Preleva");
+    		impfield.setVisible(true);
+    		btok.setVisible(true);
+    	}
     }
 
     @FXML
@@ -205,7 +234,11 @@ public class sportelloController {
 
     @FXML
     void ritiraSoldi(ActionEvent event) {
-
+    	screen.setText("Operazione avvenuta con successo");
+    	menu.setText("\n\n\n\n\n\n\nIndietro");
+    	soldi.setVisible(false);
+    	fase = 4;
+    	
     }
 
     @FXML
