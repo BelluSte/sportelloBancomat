@@ -1,7 +1,20 @@
 package sportello;
 
-public class Utenti {
+import java.io.Serializable;
+
+public class Utenti implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8069194360234139093L;
+
+
+	@Override
+	public String toString() {
+		return "Utenti [cognome=" + cognome + ", nome=" + nome + ", pin=" + pin + ", saldo=" + saldo + "]";
+	}
+
 	private String cognome;
 	private String nome;
 	private String pin;

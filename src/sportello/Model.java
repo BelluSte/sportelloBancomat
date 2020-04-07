@@ -1,28 +1,65 @@
 package sportello;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class Model {
 	
-	private Utenti cc1 = new Utenti("Rossi", "Mario", "1234", 5000.00);
-	private Utenti cc2 = new Utenti("Verdi", "Luigi", "4321", 600.00);
-	private Utenti cc3 = new Utenti("Guidi", "Guido", "0000", 11000.00);
-	
-	private ArrayList<Utenti> cc = new ArrayList<Utenti>();
+	private ArrayList<Utenti> cc;
 	
 	public int iCC;
 	public boolean ccTrovato = false;
 	
-
+	FileInputStream fis;
+	ObjectInputStream ois;
+	FileOutputStream fos;
+	ObjectOutputStream oos;
+	
+	@SuppressWarnings("unchecked")
 	public Model() {
-		cc.add(cc1);
-		cc.add(cc2);
-		cc.add(cc3);
+		try {
+			fis = new FileInputStream("D:\\Stefano\\Documents\\Java\\SportelloBancomat\\src\\sportello\\filefolder\\save.txt");
+			ois = new ObjectInputStream(fis);
+			
+			cc = (ArrayList<Utenti>) ois.readObject();
+			
+			ois.close();
+			fis.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	
 	public void Exit() {
-		iCC = -1;
+		
+		try {
+			iCC = -1;
+			
+			fos = new FileOutputStream("D:\\Stefano\\Documents\\Java\\SportelloBancomat\\src\\sportello\\filefolder\\save.txt");
+			oos = new ObjectOutputStream(fos);
+			
+			oos.writeObject(cc);
+			
+			oos.close();
+			fos.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
